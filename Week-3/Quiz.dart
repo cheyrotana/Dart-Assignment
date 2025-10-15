@@ -1,6 +1,6 @@
 class Question {
   final String title;
-  List<String> choices = [];
+  final List<String> choices;
   final String goodChoice;
 
   Question({
@@ -13,6 +13,7 @@ class Question {
 class Answer {
   final String answerChoice;
   final Question question;
+  
   Answer({required this.answerChoice, required this.question});
 
   bool isGoodAnswer() {
@@ -24,8 +25,8 @@ class Answer {
 }
 
 class Quiz {
-  List<Question> questions;
-  List<Answer> answers;
+  final List<Question> questions;
+  final List<Answer> answers;
 
   Quiz({required this.questions, required this.answers});
 
