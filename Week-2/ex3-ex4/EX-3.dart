@@ -3,10 +3,14 @@ class CustomDuration {
 
   int get millisecond => _millisecond;
 
-  CustomDuration(this._millisecond);
+  CustomDuration(this._millisecond) {
+    if (_millisecond < 0) {
+      throw Exception("Duration can not be negative.");
+    }
+  }
 
   // name constructor
-  CustomDuration.fromhour(int hour)
+  CustomDuration.fromHours(int hour)
     : _millisecond = hour < 0
           ? throw Exception("Hour can not be negative.")
           : hour * 60 * 60 * 1000;
@@ -26,7 +30,6 @@ class CustomDuration {
 
   CustomDuration operator -(CustomDuration other) {
     int result = this.millisecond - other._millisecond;
-    if (result < 0) result = 0;
     return CustomDuration(result);
   }
 
@@ -34,28 +37,29 @@ class CustomDuration {
     return this._millisecond > other.millisecond;
   }
 
-  @override
-  String toString() => "$_millisecond ms";
+  int get ms => this._millisecond;
 }
 
 void main() {
-
   var d1 = CustomDuration.fromSeconds(10);
   var d2 = CustomDuration.fromSeconds(4);
 
-  print('d1: $d1');
-  print('d2: $d2');
+  print('d1: ${d1.ms} ms');
+  print('d2: ${d2.ms} ms');
 
   print('Is d1 > d2?  ${d1 > d2}');
-  print('Is d2 > d1?  ${d2 > d1}'); 
+  print('Is d2 > d1?  ${d2 > d1}');
 
   var sum = d1 + d2;
-  print('d1 + d2 = $sum'); 
+  print('d1 + d2 = ${sum.ms} ms');
 
   var diff1 = d1 - d2;
-  print('d1 - d2 = $diff1'); 
+  print('d1 - d2 = ${diff1.ms} ms');
 
-  var diff2 = d2 - d1;
-  print('d2 - d1 = $diff2'); 
+  try {
+    var diff2 = d2 - d1;
+    print('d2 - d1 = ${diff2.ms} ms');
+  } catch (e) {
+    print('d2 - d1: Error - $e');
+  }
 }
-

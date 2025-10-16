@@ -42,7 +42,7 @@ class Order {
     required this.customer,
     required this.type,
     required this.items,
-    required this.shop,
+    this.shop,
     this.address,
   });
 
@@ -58,17 +58,13 @@ class Order {
   String toString() {
     String deliveryInfo;
     if (type == OrderType.delivery) {
-      if (customer.address == null) {
-        deliveryInfo = 'Delivered to: $address';
-      } else {
-        deliveryInfo = 'Delivered to: ${customer.address}';
-      }
+      deliveryInfo = 'Delivered to: ${address ?? customer.address ?? 'N/A'}';
     } else {
-      if (shop?.shopName == null && shop?.shopAddress == null) {
-        deliveryInfo = 'Pick up at: N/A, N/A';
+      if (shop == null) {
+        deliveryInfo = 'Pick up at: N/A';
       } else {
         deliveryInfo =
-            'Product to be pickd up at: ${shop?.shopName}, ${shop?.shopAddress}';
+            'Product to be picked up at: ${shop!.shopName}, ${shop!.shopAddress}';
       }
     }
     return '''
@@ -81,46 +77,26 @@ class Order {
 }
 
 void main() {
-  // Create a shop
-  var shop = Shop(
-    shopName: 'Daily Beans Café',
-    shopAddress: '123 Coffee Street',
-  );
+  var shop = Shop(shopName: 'Bro mav', shopAddress: 'Prek Leab');
+  var coffee = Product(productName: 'Latte', productPrice: 1.5);
+  var customer = Customer(customerName: 'Rafat', address: 'CADT');
 
-  // Create some products
-  var coffee = Product(productName: 'Latte', productPrice: 3.5);
-  var croissant = Product(productName: 'Croissant', productPrice: 2.0);
-
-  // Create a customer
-  var customer = Customer(
-    customerName: 'Alice',
-    customerEmail: 'alice@example.com',
-    address: '45 Maple Avenue',
-  );
-
-  // Create order items
-  var item1 = OrderItem(product: coffee, quantity: 2);
-  var item2 = OrderItem(product: croissant, quantity: 3);
-
-  // Create an order (delivery)
   var deliveryOrder = Order(
     customer: customer,
     type: OrderType.delivery,
-    items: [item1, item2],
-    shop: shop,
+    items: [OrderItem(product: coffee, quantity: 2)],
+    shop: shop
   );
 
-  // Create another order (pickup)
   var pickupOrder = Order(
     customer: customer,
     type: OrderType.pickup,
-    items: [item1],
+    items: [OrderItem(product: coffee, quantity: 2)],
     shop: shop,
   );
 
   print('--- Delivery Order ---');
   print(deliveryOrder);
-
   print('\n--- Pickup Order ---');
   print(pickupOrder);
 }
