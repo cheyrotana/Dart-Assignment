@@ -11,17 +11,11 @@ class CustomDuration {
 
   // name constructor
   CustomDuration.fromHours(int hour)
-    : _millisecond = hour < 0
-          ? throw Exception("Hour can not be negative.")
-          : hour * 60 * 60 * 1000;
+    : _millisecond = hour * 60 * 60 * 1000;
   CustomDuration.fromMinutes(int min)
-    : _millisecond = min < 0
-          ? throw Exception("Minute can not be negative.")
-          : min * 60 * 1000;
+    : _millisecond = min * 60 * 1000;
   CustomDuration.fromSeconds(int sec)
-    : _millisecond = sec < 0
-          ? throw Exception("Second can not be negative.")
-          : sec * 1000;
+    : _millisecond = sec * 1000;
 
   //Overloaded Operators
   CustomDuration operator +(CustomDuration other) {
@@ -38,6 +32,9 @@ class CustomDuration {
   }
 
   int get ms => this._millisecond;
+  double get seconds => _millisecond / 1000.0;
+  double get minutes => _millisecond / (60 * 1000);
+  double get hours => _millisecond / (60 * 60 * 1000);
 }
 
 void main() {
