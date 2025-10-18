@@ -1,10 +1,21 @@
 enum OrderType { pickup, delivery }
 
+class Address {
+  final String street;
+  final String city;
+
+  Address({required this.street, required this.city});
+
+  @override
+  String toString() => "$street, $city";
+}
+
 class Shop {
   final String shopName;
-  final String shopAddress;
+  final Address address;
+  final List<Product> products;
 
-  Shop({required this.shopAddress, required this.shopName});
+  Shop({required this.shopName, required this.address, required this.products});
 }
 
 class Product {
@@ -17,9 +28,15 @@ class Product {
 class Customer {
   final String customerName;
   final String? customerEmail;
-  final String? address;
+  final Address? address;
+  final List<Order>? orders;
 
-  Customer({this.customerEmail, required this.customerName, this.address});
+  Customer({
+    this.customerEmail,
+    required this.customerName,
+    this.address,
+    this.orders,
+  });
 }
 
 class OrderItem {
@@ -36,14 +53,14 @@ class Order {
   final OrderType type;
   final List<OrderItem> items;
   final Shop? shop;
-  final String? address; //optional address (office, friend's home)
+  final Address? deliveryAddress;
 
   Order({
     required this.customer,
     required this.type,
     required this.items,
     this.shop,
-    this.address,
+    this.deliveryAddress,
   });
 
   double totalAmount() {
@@ -58,13 +75,14 @@ class Order {
   String toString() {
     String deliveryInfo;
     if (type == OrderType.delivery) {
-      deliveryInfo = 'Delivered to: ${address ?? customer.address ?? 'N/A'}';
+      deliveryInfo =
+          'Delivered to: ${deliveryAddress ?? customer.address ?? 'N/A'}';
     } else {
       if (shop == null) {
         deliveryInfo = 'Pick up at: N/A';
       } else {
         deliveryInfo =
-            'Product to be picked up at: ${shop!.shopName}, ${shop!.shopAddress}';
+            'Product to be picked up at: ${shop!.shopName}, ${shop!.address}';
       }
     }
     return '''
@@ -77,17 +95,31 @@ class Order {
 }
 
 void main() {
-  var shop = Shop(shopName: 'Bro mav', shopAddress: 'Prek Leab');
+  //products
   var coffee = Product(productName: 'Latte', productPrice: 1.5);
-  var customer = Customer(customerName: 'Rafat', address: 'CADT');
+  var tea = Product(productName: 'Green Tea', productPrice: 1.0);
 
+  //shop with products
+  var shopAddress = Address(street: 'Preak Leab 22', city: 'Prek Leab');
+  var shop = Shop(
+    shopName: 'Bro mav',
+    address: shopAddress,
+    products: [coffee, tea],
+  );
+
+  //customer with address
+  var customerAddress = Address(street: 'Campus', city: 'CADT');
+  var customer = Customer(customerName: 'Rafat', address: customerAddress);
+
+  //Delivery order
   var deliveryOrder = Order(
     customer: customer,
     type: OrderType.delivery,
     items: [OrderItem(product: coffee, quantity: 2)],
-    shop: shop
+    shop: shop,
   );
 
+  //Pickup order
   var pickupOrder = Order(
     customer: customer,
     type: OrderType.pickup,
