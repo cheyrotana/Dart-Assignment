@@ -5,11 +5,12 @@ class Question {
   final int point;
 
   Question(
-      {required this.title,
+    {
+      required this.title,
       required this.choices,
       required this.goodChoice,
-      this.point = 1}
-    );
+      this.point = 1
+    });
 }
 
 class Answer {
@@ -50,4 +51,18 @@ class Quiz {
     }
     return totalScore;
   }
+
+  void clearAnswers() {
+    answers.clear();
+  }
+}
+
+class Player {
+  String? name;
+  int? score;
+
+  Player({this.name, this.score});
+
+  @override
+  String toString() => name ?? '';
 }

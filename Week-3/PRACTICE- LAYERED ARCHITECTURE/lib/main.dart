@@ -9,7 +9,7 @@ void main() {
         title: "Capital of France?",
         choices: ["Paris", "London", "Rome"],
         goodChoice: "Paris",
-        point: 10),
+        point: 50),
     Question(
         title: "2 + 2 = ?", 
         choices: ["2", "4", "5"], 
