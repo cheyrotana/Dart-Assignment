@@ -1,27 +1,36 @@
+import 'package:uuid/uuid.dart';
+
+const uuid = Uuid();
+
 class Question {
+  final String _id;
   final String title;
   final List<String> choices;
   final String goodChoice;
   final int point;
 
   Question(
-    {
-      required this.title,
+      {required this.title,
       required this.choices,
       required this.goodChoice,
-      this.point = 1
-    });
+      this.point = 1,
+      String? id}) : _id = id ?? uuid.v4();
+
+  String get id => this._id;  
 }
 
 class Answer {
+  final String _id;
   final Question question;
   final String answerChoice;
 
-  Answer({required this.question, required this.answerChoice});
+  Answer({required this.question, required this.answerChoice, String? id}) : _id = id ?? uuid.v4();
 
   bool isGood() {
     return this.answerChoice == question.goodChoice;
   }
+
+  String get id => this._id;
 }
 
 class Quiz {
