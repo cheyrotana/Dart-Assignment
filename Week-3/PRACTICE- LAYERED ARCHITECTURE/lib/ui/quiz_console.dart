@@ -18,6 +18,9 @@ class QuizConsole {
       if (nameInput != null && nameInput.isNotEmpty) {
         Player player = Player(name: nameInput);
 
+        //(override)
+        quiz.answers.removeWhere((answer) => answer.playerName == nameInput);
+
         for (var question in quiz.questions) {
           print('Question: ${question.title} - (${question.point} points)');
           print('Choices: ${question.choices}');
@@ -25,7 +28,11 @@ class QuizConsole {
           String? userInput = stdin.readLineSync();
           // Check for null input
           if (userInput != null && userInput.isNotEmpty) {
-            Answer answer = Answer(question: question, answerChoice: userInput);
+            Answer answer = Answer(
+              questionId: question.id,
+              answerChoice: userInput,
+              playerName: nameInput,
+            );
             quiz.addAnswer(answer);
           } else {
             print('No answer entered. Skipping question.');
@@ -33,19 +40,18 @@ class QuizConsole {
           print('');
         }
 
-        int scoreInPercentage = quiz.getScoreInPercentage();
-        int scoreInNumber = quiz.getTotalScore();
+        int scoreInNumber = quiz.getTotalScoreForPlayer(nameInput);
+        int scoreInPercentage = quiz.getScoreInPercentageForPlayer(nameInput);
         player.score = scoreInNumber;
 
         print('${player.name}, Your score: $scoreInPercentage % correct');
         print('${player.name}, Your score: $scoreInNumber');
 
-        quiz.clearAnswers();
+        players.add(player);
 
         for (Player p in players) {
           print('Player: ${p.name}\t\t\tScore: ${p.score}');
         }
-        print('');
       } else {
         loopFlag = false;
         print('');

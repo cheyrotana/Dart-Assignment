@@ -21,17 +21,15 @@ class QuizRepository {
       );
     }).toList();
 
-    var questionMap = {for (var q in questions) q.id: q};
-
     var answersJson = data['answers'] as List;
     var answers = answersJson.map((a) {
       var questionId = a['questionId'];
-      var question = questionMap[questionId];
 
       return Answer(
         id: a['id'],
-        question: question!,
+        questionId: questionId,
         answerChoice: a['answerChoice'],
+        playerName: a['playerName'],
       );
     }).toList();
 
@@ -41,5 +39,36 @@ class QuizRepository {
     }
 
     return quiz;
+  }
+
+  void writeQuiz(Quiz quiz) {
+    var questionsJson = quiz.questions.map((q) {
+      return {
+        'id': q.id,
+        'title': q.title,
+        'choices': q.choices,
+        'goodChoice': q.goodChoice,
+        'points': q.point,
+      };
+    }).toList();
+
+    var answersJson = quiz.answers.map((a) {
+      return {
+        'id': a.id,
+        'questionId': a.questionId,
+        'answerChoice': a.answerChoice,
+        'playerName': a.playerName,
+      };
+    }).toList();
+
+    var data = {
+      'id': quiz.id,
+      'questions': questionsJson,
+      'answers': answersJson,
+    };
+
+    final file = File(filePath);
+    final jsonString = JsonEncoder.withIndent('  ').convert(data);
+    file.writeAsStringSync(jsonString);
   }
 }

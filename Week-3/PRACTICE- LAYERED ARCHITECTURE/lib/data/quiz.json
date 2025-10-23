@@ -1,0 +1,28 @@
+{
+  "id": "e08a3377-fa5b-4478-a8cb-2f95d9085edd",
+  "questions": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "title": "Capital of France?",
+      "choices": [
+        "Paris",
+        "London",
+        "Rome"
+      ],
+      "goodChoice": "Paris",
+      "points": 50
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440002",
+      "title": "2 + 2 = ?",
+      "choices": [
+        "2",
+        "4",
+        "5"
+      ],
+      "goodChoice": "4",
+      "points": 50
+    }
+  ],
+  "answers": []
+}
