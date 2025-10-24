@@ -24,5 +24,38 @@
       "points": 50
     }
   ],
-  "answers": []
+  "playerAttempts": [
+    {
+      "id": "01e93211-8863-49fd-8965-d35355168e42",
+      "name": "Rotana",
+      "answers": [
+        {
+          "id": "a76af1bf-bdbe-42bf-82f9-5dfe551592b8",
+          "questionId": "550e8400-e29b-41d4-a716-446655440001",
+          "answerChoice": "Rome"
+        },
+        {
+          "id": "c478ca9a-0de7-48f8-ba19-af2256d60188",
+          "questionId": "550e8400-e29b-41d4-a716-446655440002",
+          "answerChoice": "4"
+        }
+      ]
+    },
+    {
+      "id": "293b5cee-7955-44bb-965c-79ac4129a023",
+      "name": "LOLa",
+      "answers": [
+        {
+          "id": "38c876e4-9bb7-428c-9780-419b93a27c12",
+          "questionId": "550e8400-e29b-41d4-a716-446655440001",
+          "answerChoice": "Paris"
+        },
+        {
+          "id": "9f381e5f-ee21-45ac-818c-b5b7ba2908d0",
+          "questionId": "550e8400-e29b-41d4-a716-446655440002",
+          "answerChoice": "4"
+        }
+      ]
+    }
+  ]
 }

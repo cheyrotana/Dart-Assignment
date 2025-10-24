@@ -1,15 +1,17 @@
-import '../domain/quiz.dart';
+﻿import '../domain/quiz.dart';
 import 'dart:io';
 import 'dart:convert';
 
 class QuizRepository {
   final String filePath;
+
   QuizRepository(this.filePath);
+
   Quiz readQuiz() {
     final file = File(filePath);
     final content = file.readAsStringSync();
     final data = jsonDecode(content);
-// Map JSON to domain objects
+
     var questionsJson = data['questions'] as List;
     var questions = questionsJson.map((q) {
       return Question(
@@ -21,22 +23,33 @@ class QuizRepository {
       );
     }).toList();
 
-    var answersJson = data['answers'] as List;
-    var answers = answersJson.map((a) {
-      var questionId = a['questionId'];
+    List<Player> players = [];
+    if (data.containsKey('playerAttempts')) {
+      var playersJson = data['playerAttempts'] as List;
+      for (var p in playersJson) {
+        var answersJson = p['answers'] as List;
+        var answers = answersJson.map((a) {
+          return Answer(
+            id: a['id'],
+            questionId: a['questionId'],
+            answerChoice: a['answerChoice'],
+          );
+        }).toList();
 
-      return Answer(
-        id: a['id'],
-        questionId: questionId,
-        answerChoice: a['answerChoice'],
-        playerName: a['playerName'],
-      );
-    }).toList();
-
-    var quiz = Quiz(questions: questions);
-    for (var answer in answers) {
-      quiz.addAnswer(answer);
+        var player = Player(
+          id: p['id'],
+          name: p['name'],
+          answers: answers,
+        );
+        players.add(player);
+      }
     }
+
+    var quiz = Quiz(
+      id: data['id'],
+      questions: questions,
+      players: players,
+    );
 
     return quiz;
   }
@@ -52,19 +65,26 @@ class QuizRepository {
       };
     }).toList();
 
-    var answersJson = quiz.answers.map((a) {
+    var playersJson = quiz.players.map((p) {
+      var answersJson = p.answers.map((a) {
+        return {
+          'id': a.id,
+          'questionId': a.questionId,
+          'answerChoice': a.answerChoice,
+        };
+      }).toList();
+
       return {
-        'id': a.id,
-        'questionId': a.questionId,
-        'answerChoice': a.answerChoice,
-        'playerName': a.playerName,
+        'id': p.id,
+        'name': p.name,
+        'answers': answersJson,
       };
     }).toList();
 
     var data = {
       'id': quiz.id,
       'questions': questionsJson,
-      'answers': answersJson,
+      'playerAttempts': playersJson,
     };
 
     final file = File(filePath);
