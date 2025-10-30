@@ -12,11 +12,7 @@ void main() {
             children: [
               CustomCard(text: 'OOP'),
               CustomCard(text: 'DART'),
-              CustomCard(
-                text: 'FLUTTER',
-                start: Colors.blue[300],
-                end: Colors.blue[600],
-              ),
+              CustomCard(text: 'FLUTTER', start: Colors.blue[300], end:Colors.blue[600])
             ],
           ),
         ),
@@ -27,12 +23,13 @@ void main() {
 
 class CustomCard extends StatelessWidget {
   const CustomCard({super.key, required this.text, Color? start, Color? end})
-    : start = start ?? Colors.blue,
-      end = end ?? Colors.blue;
+      : start = start ?? Colors.blue,
+        end = end ?? Colors.blue;
 
   final String text;
   final Color start;
   final Color end;
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +40,10 @@ class CustomCard extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       child: Center(
-        child: Text(text, style: TextStyle(color: Colors.white, fontSize: 30)),
+        child: Text(
+          text,
+          style: TextStyle(color: Colors.white, fontSize: 30),
+        ),
       ),
     );
   }
