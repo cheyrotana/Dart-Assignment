@@ -72,6 +72,11 @@ flutter:
     - assets/dice/dice-4.png
     - assets/dice/dice-5.png
     - assets/dice/dice-6.png
+    - assets/weather/summer.jpg
+    - assets/weather/winter.jpg
+    - assets/weather/fall.jpg
+    - assets/weather/spring.jpg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
