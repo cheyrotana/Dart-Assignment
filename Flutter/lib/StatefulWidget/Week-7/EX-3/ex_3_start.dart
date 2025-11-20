@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './image_viewer.dart';
+import 'image_viewer.dart';
 
 void main() => runApp(
   MaterialApp(

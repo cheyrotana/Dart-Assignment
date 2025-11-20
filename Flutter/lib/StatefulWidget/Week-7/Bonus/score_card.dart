@@ -1,19 +1,4 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(
-    MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.green,
-        body: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(children: [ScoreCard(title: 'dog')]),
-        ),
-      ),
-    ),
-  );
-}
-
 class ScoreCard extends StatefulWidget {
   const ScoreCard({super.key, required this.title});
 
@@ -24,23 +9,34 @@ class ScoreCard extends StatefulWidget {
 }
 
 class _ScoreCardState extends State<ScoreCard> {
-
+  double width = 0.0;
 
   void onAdd() {
     setState(() {
-      
+      width = (width + 0.1).clamp(0.0, 1.0);
     });
   }
 
   void onRemove() {
     setState(() {
-      
+      width = (width - 0.1).clamp(0.0, 1.0);
     });
   }
 
-  @override 
+  Color get progressColor {
+    if (width <= 0.4) {
+      return const Color.fromARGB(255, 97, 211, 101);
+    } else if (width > 0.4 && width <= 0.75) {
+      return const Color.fromARGB(255, 78, 187, 83);
+    } else {
+      return const Color.fromARGB(255, 47, 128, 53);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -50,7 +46,7 @@ class _ScoreCardState extends State<ScoreCard> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'My Score in Flutter',
+            widget.title,
             style: TextStyle(
               color: Colors.grey,
               fontSize: 26,
@@ -61,16 +57,15 @@ class _ScoreCardState extends State<ScoreCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(onPressed: onAdd, icon: Icon(Icons.remove)),
+              IconButton(onPressed: onRemove, icon: Icon(Icons.remove)),
               SizedBox(width: 100),
-              IconButton(onPressed: onRemove, icon: Icon(Icons.add)),
+              IconButton(onPressed: onAdd, icon: Icon(Icons.add)),
             ],
           ),
           SizedBox(height: 10),
           Stack(
             children: [
               Container(
-                margin: EdgeInsets.all(18),
                 width: double.infinity,
                 height: 40,
                 decoration: (BoxDecoration(
@@ -78,16 +73,11 @@ class _ScoreCardState extends State<ScoreCard> {
                   borderRadius: BorderRadius.circular(8),
                 )),
               ),
-              Positioned(
-                left: 19,
-                top: 19,
+              FractionallySizedBox(
+                widthFactor: width,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    width: 100,
-                    height: 38,
-                    color: Colors.greenAccent,
-                  ),
+                  child: Container(height: 40, color: progressColor),
                 ),
               ),
             ],

@@ -1,27 +1,15 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(
-  MaterialApp(
-    home: Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text("Favorite cards"),
-      ),
-      body: Column(
-        children: [
-          FavoriteCard(isFavorite: false),
-          FavoriteCard(isFavorite: true),
-          FavoriteCard(isFavorite: false),
-        ]
-      ),
-    ),
-  ),
-);
-
 class FavoriteCard extends StatefulWidget {
-  const FavoriteCard({super.key, this.isFavorite = false});
+  const FavoriteCard({
+    super.key,
+    this.isFavorite = false,
+    required this.title,
+    required this.description,
+  });
 
+  final String title;
+  final String description;
   final bool isFavorite;
 
   @override
@@ -61,9 +49,9 @@ class _FavoriteCardState extends State<FavoriteCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('title', style: TextStyle(color: Colors.blue)),
+                Text(widget.title, style: TextStyle(color: Colors.blue)),
                 SizedBox(height: 10),
-                Text('description', style: TextStyle(color: Colors.grey)),
+                Text(widget.description, style: TextStyle(color: Colors.grey)),
               ],
             ),
           ),
