@@ -1,18 +1,9 @@
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({
-    super.key,
-    // this.active = false,
-    required this.onChanged,
-  });
+  const WelcomeScreen({super.key, required this.onChanged});
 
-  // final bool active;
-  final ValueChanged<bool> onChanged;
-
-  // void handlePress() {
-  //   onChanged(!active);
-  // }
+  final VoidCallback onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           OutlinedButton(
-            onPressed: () => onChanged(false),
+            onPressed: onChanged,
             style: OutlinedButton.styleFrom(
               side: const BorderSide(width: 1.0, color: Colors.white),
             ),

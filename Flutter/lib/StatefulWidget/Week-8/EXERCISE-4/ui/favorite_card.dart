@@ -1,0 +1,89 @@
+import 'package:flutter/material.dart';
+import '../data/joke_list.dart';
+
+class FavoriteCardContainer extends StatefulWidget {
+  const FavoriteCardContainer({super.key});
+
+  @override
+  State<FavoriteCardContainer> createState() => _FavoriteJokesContainerState();
+}
+
+class _FavoriteJokesContainerState extends State<FavoriteCardContainer> {
+  int? favoriteIndex;
+
+  void onFavoriteClicked(int index) {
+    setState(() {
+      if (favoriteIndex == index) {
+        favoriteIndex = null;
+      } else {
+        favoriteIndex = index;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: jokes.length,
+      itemBuilder: (context, index) => FavoriteCard(
+        title: jokes[index].title,
+        description: jokes[index].description,
+        isFavorite: favoriteIndex == index,
+        onFavorite: () => onFavoriteClicked(index),
+      ),
+    );
+  }
+}
+
+class FavoriteCard extends StatelessWidget {
+  final String title;
+  final String description;
+  final bool isFavorite;
+  final VoidCallback onFavorite;
+
+  const FavoriteCard({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.isFavorite,
+    required this.onFavorite,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(width: .5, color: Colors.grey)),
+      ),
+      padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(description),
+              ],
+            ),
+          ),
+
+          IconButton(
+            onPressed: onFavorite,
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red : Colors.grey,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
