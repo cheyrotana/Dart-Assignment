@@ -32,13 +32,18 @@ class _QuizAppState extends State<QuizApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: SizedBox(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff2196F3), Color(0xff0D47A1)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
           child: currentScreenIndex == CurrentScreen.startScreen.index
-              ? StartScreen(
-                  onStartQuiz: onClickedStartQuiz,
-                )
+              ? StartScreen(onStartQuiz: onClickedStartQuiz)
               : const Placeholder(),
-        )
+        ),
       ),
     );
   }

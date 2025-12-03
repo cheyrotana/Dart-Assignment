@@ -7,25 +7,20 @@ class StartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.lightBlueAccent,
-      child: Center(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Quiz Dart',
-                style: TextStyle(fontSize: 24),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  onStartQuiz(true);
-                }, child: Text('Start Quiz')
-              )
-            ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Quiz Dart',
+            style: TextStyle(fontSize: 24),
           ),
-        ),
+          ElevatedButton(
+            onPressed: () {
+              onStartQuiz(true);
+            }, child: Text('Start Quiz')
+          )
+        ],
       ),
     );
   }
