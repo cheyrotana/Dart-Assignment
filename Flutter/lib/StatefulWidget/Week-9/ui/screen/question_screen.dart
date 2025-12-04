@@ -21,7 +21,6 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionScreenState extends State<QuestionScreen> {
   int currentIndex = 0;
-  bool finished = false;
   List<Answer> attempts = [];
 
   void onAnswerSelected(String choice) {
