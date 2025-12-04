@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
-import '../reusable_widget/button.dart';
-import '../../data/question.dart';
+import '../reusable_widget/custom_button.dart';
 import '../../model/answer_model.dart';
+import '../../model/question_model.dart';
 
 class QuestionScreen extends StatefulWidget {
-  final void Function(List<Answer>) onViewHistory;
-  const QuestionScreen({super.key, required this.onViewHistory});
+
+  // Callback so parent (QuizApp) can show result once answers are ready
+  final void Function(List<Answer>) onQuizFinished;
+  final List<Question> quizData;
+
+  const QuestionScreen({
+    super.key,
+    required this.onQuizFinished,
+    required this.quizData,
+  });
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -16,60 +24,29 @@ class _QuestionScreenState extends State<QuestionScreen> {
   bool finished = false;
   List<Answer> attempts = [];
 
-  void _onAnswerSelected(String choice) {
-    final question = sampleQuestions[currentIndex];
+  void onAnswerSelected(String choice) {
+
+    final question = widget.quizData[currentIndex];
     attempts.add(Answer(question: question, answerChoice: choice));
-    if (currentIndex < sampleQuestions.length - 1) {
+    if (currentIndex < widget.quizData.length - 1) {
       setState(() {
         currentIndex++;
       });
     } else {
-      setState(() {
-        finished = true;
-      });
+      widget.onQuizFinished(attempts);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (finished) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Quiz Completed!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  currentIndex = 0;
-                  finished = false;
-                  attempts.clear();
-                });
-              },
-              child: const Text('Restart'),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () => widget.onViewHistory(attempts),
-              child: const Text('View History'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    final question = sampleQuestions[currentIndex];
+    final question = widget.quizData[currentIndex];
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Question ${currentIndex + 1} of ${sampleQuestions.length}',
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+            'Question ${currentIndex + 1} of ${widget.quizData.length}',
+            style: const TextStyle(fontSize: 16, color: Colors.black),
           ),
           const SizedBox(height: 8),
           Text(
@@ -79,9 +56,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
           ),
           const SizedBox(height: 24),
           ...question.choices.map(
-            (choice) => AnswerButton(
+            (choice) => CustomButton(
               text: choice,
-              onPressed: () => _onAnswerSelected(choice),
+              onPressed: () => onAnswerSelected(choice),
             ),
           ),
         ],

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-// import '../reusable_widget/button.dart';
+import '../reusable_widget/navigation_button.dart';
+
 class StartScreen extends StatelessWidget {
-  final ValueChanged<bool> onStartQuiz;
+  final VoidCallback onStartQuiz;
 
   const StartScreen({super.key, required this.onStartQuiz});
 
@@ -9,17 +10,20 @@ class StartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'Quiz Dart',
-            style: TextStyle(fontSize: 24),
+            'Quiz App',
+            style: TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+            ),
+            textAlign: TextAlign.center,
           ),
-          ElevatedButton(
-            onPressed: () {
-              onStartQuiz(true);
-            }, child: Text('Start Quiz')
-          )
+          const SizedBox(height: 32),
+          NavigationButton(text: 'Start Quiz', onPressed: onStartQuiz),
         ],
       ),
     );

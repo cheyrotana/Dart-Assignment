@@ -1,50 +1,72 @@
 import 'package:flutter/material.dart';
 import '../../model/answer_model.dart';
+import '../reusable_widget/navigation_button.dart';
 
 class HistoryScreen extends StatelessWidget {
-  final List<Answer> attempts;
-  final VoidCallback onBack;
+  final List<List<Answer>> allAttempts;
+  final VoidCallback onRestart;
   const HistoryScreen({
     super.key,
-    required this.attempts,
-    required this.onBack,
+    required this.allAttempts,
+    required this.onRestart,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightBlueAccent,
       appBar: AppBar(
         title: const Text('History'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: onBack,
-        ),
+        backgroundColor: Colors.lightBlueAccent,
+        elevation: 0,
       ),
-      body: attempts.isEmpty
-          ? const Center(child: Text('No attempts yet.'))
-          : ListView.builder(
-              itemCount: attempts.length,
-              itemBuilder: (context, index) {
-                final attempt = attempts[index];
-                final isCorrect = attempt.isCorrect();
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+      body: Column(
+        children: [
+          Expanded(
+            child: allAttempts.isEmpty
+                ? const Center(child: Text('No attempts yet.'))
+                : ListView.builder(
+                    itemCount: allAttempts.length,
+                    itemBuilder: (context, index) {
+                      final attemptList = allAttempts[index];
+                      final correct = attemptList
+                          .where((a) => a.isCorrect())
+                          .length;
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Attempt ${index + 1}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Score: $correct / ${attemptList.length}',
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  child: ListTile(
-                    title: Text(attempt.question.title),
-                    subtitle: Text(
-                      'Your answer: ${attempt.answerChoice} (${isCorrect ? 'Correct' : 'Wrong'})',
-                    ),
-                    leading: Icon(
-                      isCorrect ? Icons.check_circle : Icons.cancel,
-                      color: isCorrect ? Colors.green : Colors.red,
-                    ),
-                  ),
-                );
-              },
-            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 24),
+            child: NavigationButton(text: 'Restart', onPressed: onRestart),
+          ),
+        ],
+      ),
     );
   }
 }
