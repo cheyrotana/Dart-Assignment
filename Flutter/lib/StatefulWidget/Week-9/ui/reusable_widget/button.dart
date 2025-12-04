@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
-  const CustomButton({super.key});
+class AnswerButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+
+  const AnswerButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        onPressed: null,
-        child: Text('Reusable Button'),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton(onPressed: onPressed, child: Text(text)),
     );
   }
 }

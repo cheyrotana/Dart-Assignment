@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutterexercise/StatefulWidget/Week-9/ui/screen/question_screen.dart';
 import './screen/start_screen.dart';
+import './screen/history_screen.dart';
+import '../model/answer_model.dart';
 
 enum CurrentScreen { startScreen, questionScreen, historyScreen }
 
@@ -12,24 +15,43 @@ class QuizApp extends StatefulWidget {
 
 class _QuizAppState extends State<QuizApp> {
   CurrentScreen currentScreen = CurrentScreen.startScreen;
-  bool isQuizStarted = false;
+  List<Answer> attempts = [];
 
-  void onClickedStartQuiz(bool newValue) {
+  void startQuiz(bool value) {
     setState(() {
-      isQuizStarted = newValue;
+      currentScreen = CurrentScreen.questionScreen;
+      attempts.clear();
     });
   }
 
-  int get currentScreenIndex {
-    if (isQuizStarted) {
-      return CurrentScreen.questionScreen.index;
-    } else {
-      return CurrentScreen.startScreen.index;
-    }
+  void viewHistory(List<Answer> newAttempts) {
+    setState(() {
+      attempts = newAttempts;
+      currentScreen = CurrentScreen.historyScreen;
+    });
+  }
+
+  void backToStart() {
+    setState(() {
+      currentScreen = CurrentScreen.startScreen;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget screen;
+    switch (currentScreen) {
+      case CurrentScreen.startScreen:
+        screen = StartScreen(onStartQuiz: startQuiz);
+        break;
+      case CurrentScreen.questionScreen:
+        screen = QuestionScreen(onViewHistory: viewHistory);
+        break;
+      case CurrentScreen.historyScreen:
+        screen = HistoryScreen(attempts: attempts, onBack: backToStart);
+        break;
+    }
+
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -40,9 +62,7 @@ class _QuizAppState extends State<QuizApp> {
               end: Alignment.bottomRight,
             ),
           ),
-          child: currentScreenIndex == CurrentScreen.startScreen.index
-              ? StartScreen(onStartQuiz: onClickedStartQuiz)
-              : const Placeholder(),
+          child: screen,
         ),
       ),
     );
